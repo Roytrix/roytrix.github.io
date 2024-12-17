@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roytrix</title>
+    <style>
+        /* Basic styling for the terminal */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+        }
+
+        #terminal {
+            height: 100vh;
+            padding: 10px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Style for the input line */
+        #input-line {
+            display: flex;
+        }
+
+        #prompt {
+            margin-right: 5px;
+        }
+
+        #command {
+            background: transparent;
+            color: #00FF00;
+            border: none;
+            outline: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            flex: 1;
+        }
+
+        /* Selection color for better UX */
+        ::selection {
+            background: #00FF00;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div id="terminal">
+    <div id="output"></div>
+    <div id="input-line">
+        <span id="prompt">$</span>
+        <input type="text" id="command" autofocus autocomplete="off" />
+    </div>
+</div>
+
+<audio id="click-sound" src="assets/sounds/click_sound.mp3"></audio>
+
+<script>
+    let commandIndex = 0;
+    let charIndex = 0;
+    let welcomeMessage =  "Welcome - Type 'help' for a list of commands...";
+    const commandInput = document.getElementById('command');
+    const outputDiv = document.getElementById('output');
+    const prompt = '$'; // Prompt symbol
+    const clickSound = document.getElementById('click-sound');
+
+    // Command responses
+    const commands = {
+        help: "Available commands:\n- help: Show this help menu\n- clear: Clear the terminal\n- about: Learn about this terminal\n- time: Display current time\n- echo: Print a message\nExample: echo Hello, world!",
+        about: "This is a simulated terminal created with HTML, CSS, and JavaScript.",
+        clear: "clear",
+        time: () => `Current time: ${new Date().toLocaleTimeString()}`,
+        echo: (args) => args.join(' ') || "Usage: echo [message]",
+    };
+
+    // Handle input and command execution
+    commandInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const input = commandInput.value.trim();
+            if (input) {
+                processCommand(input);
+                commandInput.value = '';
+            }
+        }
+    });
+
+    function processCommand(input) {
+        const [command, ...args] = input.split(' ');
+        const lowerCommand = command.toLowerCase();
+
+        let response;
+        if (commands[lowerCommand]) {
+            response = typeof commands[lowerCommand] === 'function'
+                ? commands[lowerCommand](args)
+                : commands[lowerCommand];
+        } else {
+            response = `Command not found: ${command}. Type 'help' for a list of available commands.`;
+        }
+
+        printOutput(input, response);
+    }
+
+    function printOutput(input, response) {
+        const inputLine = `<div>${prompt} ${input}</div>`;
+        const outputLine = response === 'clear'
+            ? ''
+            : `<div>${response}</div>`;
+
+        if (response === 'clear') {
+            outputDiv.innerHTML = '';
+        } else {
+            outputDiv.innerHTML += inputLine + outputLine;
+        }
+
+        // Scroll to bottom
+        document.getElementById('terminal').scrollTop = terminal.scrollHeight;
+    }
+
+    function typeCommand() {
+        if (charIndex < welcomeMessage.length) {
+            commandInput.value += welcomeMessage.charAt(charIndex);
+            clickSound.currentTime = 0.16;
+            clickSound.play(); // Play the click sound
+            charIndex++;
+            setTimeout(typeCommand, 50);
+        } else {
+                setTimeout(() => {
+                    commandInput.value = '';
+                }, 2000);
+        }
+    }
+
+    typeCommand();
+</script>
+</body>
+</html>
