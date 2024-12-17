@@ -13,9 +13,8 @@ const clickSound = document.getElementById('click-sound') as HTMLAudioElement;
 // CV content
 const cvContent = `
 Jean-Marc Hébert
-Programmeur | Développeur Logiciel
+Programmeur-Analyste
 Email : johnmarkhebert@gmail.com | Téléphone : 581-909-3019 | Québec, Canada
-LinkedIn : www.linkedin.com/in/johnmarkhebert | GitHub : [Lien GitHub si disponible]
 ________________________________________
 
 Profil Professionnel
