@@ -133,7 +133,8 @@ function printOutput(input: string, response: string) {
     }
 
     // Scroll to bottom
-   // document.getElementById('terminal')!.scrollTop = terminal.scrollHeight;
+    const terminal = document.getElementById('terminal') as HTMLDivElement;
+    terminal.scrollTop = terminal.scrollHeight;
 }
 
 function typeCommand() {

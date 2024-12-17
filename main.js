@@ -56,7 +56,8 @@ function printOutput(input, response) {
         outputDiv.innerHTML += inputLine + outputLine;
     }
     // Scroll to bottom
-    // document.getElementById('terminal')!.scrollTop = terminal.scrollHeight;
+    var terminal = document.getElementById('terminal');
+    terminal.scrollTop = terminal.scrollHeight;
 }
 function typeCommand() {
     if (charIndex < welcomeMessage.length) {
