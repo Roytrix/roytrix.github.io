@@ -137,18 +137,18 @@ function printOutput(input: string, response: string) {
     terminal.scrollTop = terminal.scrollHeight;
 }
 
-function typeCommand() {
+function typeWelcomeCommand() {
     if (charIndex < welcomeMessage.length) {
         commandInput.value += welcomeMessage.charAt(charIndex);
         clickSound.currentTime = 0.17;
         clickSound.play(); // Play the click sound
         charIndex++;
-        setTimeout(typeCommand, 30);
+        setTimeout(() => typeWelcomeCommand(),30);
     } else {
         setTimeout(() => {
             commandInput.value = '';
-        }, 2000);
+        }, 4000);
     }
 }
 
-typeCommand();
+typeWelcomeCommand();
