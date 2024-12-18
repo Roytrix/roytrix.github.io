@@ -23,7 +23,6 @@ jspm_packages/
 *.sln
 
 # Build directories
-dist/
 build/
 
 # Miscellaneous
