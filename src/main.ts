@@ -1,8 +1,3 @@
-window.onload = function() {
-    const commandInput = document.getElementById('command') as HTMLInputElement;
-    commandInput.focus();
-    commandInput.click();
-}
 let charIndex = 0;
 let welcomeMessage =  "Welcome - Type 'help' for a list of commands...";
 const commandInput = document.getElementById('command') as HTMLInputElement;
@@ -106,7 +101,7 @@ commandInput.addEventListener('keydown', (e) => {
 
 function processCommand(input: string) {
     const [command, ...args] = input.split(' ');
-    const lowerCommand = command.toLowerCase();
+    const lowerCommand = command.toLowerCase() as keyof typeof commands;
 
     let response:any;
     if (commands[lowerCommand]) {
@@ -118,6 +113,8 @@ function processCommand(input: string) {
     }
 
     printOutput(input, response);
+    // Set focus back to the command input
+    commandInput.focus();
 }
 
 function printOutput(input: string, response: string) {
@@ -133,8 +130,8 @@ function printOutput(input: string, response: string) {
     }
 
     // Scroll to bottom
-    const terminal = document.getElementById('terminal') as HTMLDivElement;
-    terminal.scrollTop = terminal.scrollHeight;
+   const terminal = document.getElementById('input-line') as HTMLDivElement;
+    terminal.scrollIntoView({behavior:'smooth', block: "nearest" });
 }
 
 function typeWelcomeCommand() {
@@ -147,7 +144,7 @@ function typeWelcomeCommand() {
     } else {
         setTimeout(() => {
             commandInput.value = '';
-        }, 4000);
+        }, 3000);
     }
 }
 

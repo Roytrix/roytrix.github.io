@@ -50,15 +50,18 @@
 </head>
 <body>
 <div id="terminal">
-    <div id="output"></div>
+    <div id="output">
+    </div>
     <div id="input-line">
         <span id="prompt">$</span>
         <input type="text" id="command" autofocus autocomplete="off" />
     </div>
+    <canvas id="matrix"></canvas>
 </div>
 
 <audio id="click-sound" src="assets/sounds/click_sound.mp3"></audio>
 
-<script src="main.js"></script>
+<script src="dist/main.js"></script>
+<script src="dist/tools/matrix.js"></script>
 </body>
 </html>
