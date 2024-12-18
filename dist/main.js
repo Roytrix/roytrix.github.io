@@ -122,10 +122,20 @@ function printOutput(input, response) {
     }
     else {
         outputDiv.innerHTML += inputLine + outputLine;
+        //const outputText = inputLine + outputLine;
+        //charIndex = 0;
+        //typeCommand(outputText);
     }
     // Scroll to bottom
     const terminal = document.getElementById('input-line');
-    terminal.scrollIntoView({ behavior: 'smooth', block: "nearest" });
+    terminal.scrollIntoView({ behavior: 'smooth', block: "center" });
+}
+function typeCommand(outputText) {
+    if (charIndex < outputText.length) {
+        outputDiv.innerHTML += outputText.charAt(charIndex);
+        charIndex++;
+        setTimeout(() => typeCommand(outputText), 3);
+    }
 }
 function typeWelcomeCommand() {
     if (charIndex < welcomeMessage.length) {

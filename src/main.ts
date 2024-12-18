@@ -127,25 +127,36 @@ function printOutput(input: string, response: string) {
         outputDiv.innerHTML = '';
     } else {
         outputDiv.innerHTML += inputLine + outputLine;
+        //const outputText = inputLine + outputLine;
+        //charIndex = 0;
+        //typeCommand(outputText);
     }
 
     // Scroll to bottom
    const terminal = document.getElementById('input-line') as HTMLDivElement;
-    terminal.scrollIntoView({behavior:'smooth', block: "nearest" });
+    terminal.scrollIntoView({behavior:'smooth', block: "center" });
 }
 
-function typeWelcomeCommand() {
-    if (charIndex < welcomeMessage.length) {
-        commandInput.value += welcomeMessage.charAt(charIndex);
-        clickSound.currentTime = 0.17;
-        clickSound.play(); // Play the click sound
+function typeCommand(outputText:string) {
+    if (charIndex < outputText.length) {
+        outputDiv.innerHTML += outputText.charAt(charIndex);
         charIndex++;
-        setTimeout(() => typeWelcomeCommand(),30);
-    } else {
-        setTimeout(() => {
-            commandInput.value = '';
-        }, 3000);
+        setTimeout(() => typeCommand(outputText), 3);
     }
-}
+    }
 
-typeWelcomeCommand();
+    function typeWelcomeCommand() {
+        if (charIndex < welcomeMessage.length) {
+            commandInput.value += welcomeMessage.charAt(charIndex);
+            clickSound.currentTime = 0.17;
+            clickSound.play(); // Play the click sound
+            charIndex++;
+            setTimeout(() => typeWelcomeCommand(), 30);
+        } else {
+            setTimeout(() => {
+                commandInput.value = '';
+            }, 3000);
+        }
+    }
+
+    typeWelcomeCommand();
