@@ -14,9 +14,15 @@ ________________________________________
 
 Profil Professionnel
 
-Programmeur passionné avec plus de 10 ans d'expérience en développement logiciel, automatisation des tests et pratiques DevOps.
-Expertise dans les environnements .NET, JavaScript, TypeScript et les pipelines CI/CD. Fort d’une capacité à concevoir des solutions robustes et innovantes, 
-je combine mon expertise technique avec une approche proactive et une capacité démontrée à travailler en équipe pour livrer des projets de haute qualité.
+Passionné par le développement logiciel, j'apporte
+plus de 10 ans d'expérience en programma on,
+Assurance qualité , automa sa on des tests et
+pra ques DevOps. Expert des environnements .NET
+et Web, je maîtrise également les pipelines CI/CD. Je
+conçois des solu ons innovantes en alliant exper se
+technique, approche proac ve et collabora on
+eﬃcace pour livrer des projets avant-gardistes à juste
+coût.
 ________________________________________
 
 Compétences Techniques
