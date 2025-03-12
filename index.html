@@ -1,67 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roytrix's Terminal</title>
+    <title>Jean-Marc Hébert - CV</title>
     <style>
-        /* Basic styling for the terminal */
         body {
-            margin: 0;
-            padding: 0;
-            background-color: black;
-            color: #00FF00;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
         }
-
-        #terminal {
-            height: 100vh;
-            padding: 10px;
-            overflow-y: auto;
-            white-space: pre-wrap;
+        h1 {
+            color: #0077B5;
+            border-bottom: 2px solid #0077B5;
+            padding-bottom: 10px;
         }
-
-        /* Style for the input line */
-        #input-line {
+        h2, h3 {
+            color: #2E75B5;
+            margin-top: 25px;
+        }
+        a {
+            color: #2E75B5;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .header-info {
             display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
-
-        #prompt {
-            margin-right: 5px;
+        .role {
+            font-weight: bold;
+            color: #2E75B5;
         }
-
-        #command {
-            background: transparent;
-            color: #00FF00;
-            border: none;
-            outline: none;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
-            flex: 1;
+        .contact {
+            color: #555;
         }
-
-        /* Selection color for better UX */
-        ::selection {
-            background: #00FF00;
-            color: black;
+        .page-break {
+            page-break-before: always;
+        }
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+            }
+            .page-break {
+                page-break-before: always;
+            }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/customs.css">
 </head>
 <body>
-<div id="terminal">
-    <div id="output">
+    <h1>JEAN-MARC HÉBERT</h1>
+    
+    <div class="header-info">
+        <span class="role">DEVOPS | PROGRAMMEUR-ANALYSTE</span>
+        <span class="contact">
+            <a href="mailto:Roytrix@proton.me">Roytrix@proton.me</a> | 
+            581 909-3019 | 
+            Québec, QC | 
+            <a href="https://github.com/Roytrix">github.com/Roytrix</a>
+        </span>
     </div>
-    <div id="input-line">
-        <span id="prompt">$</span>
-        <input type="text" id="command" autofocus autocomplete="off" />
-    </div>
-    <canvas id="matrix"></canvas>
-</div>
 
-<audio id="click-sound" src="assets/sounds/click_sound.mp3"></audio>
+    <h2>PROFIL</h2>
+    <p>
+        DevOps passionné, avec plus de 15 ans d'expérience en développement logiciel, automatisation, 
+        intégration et déploiement continu. Spécialisé dans la mise en place d'infrastructures CI/CD optimisées, 
+        l'orchestration de conteneurs et l'amélioration des processus DevOps pour garantir des livraisons fluides et efficaces. 
+        Capable d'allier l'expertise technique, l'esprit analytique et la collaboration pour élever la qualité des produits.
+    </p>
 
-<script src="dist/main.js"></script>
-<script src="dist/tools/matrix.js"></script>
+    <h2>COMPÉTENCES CLÉS</h2>
+    <ul>
+        <li><strong>DevOps & CI/CD</strong>: Jenkins, GitHub Actions, VMWare, Azure DevOps, Docker, Kubernetes, YAML</li>
+        <li><strong>Cloud & Infrastructure</strong>: Azure, AWS, GitHub Entreprise, Bitbucket, Infrastructure as Code (IaC), Jira</li>
+        <li><strong>Développement & Automatisation</strong>: C#, TypeScript, Rust, Python, Bash, Groovy</li>
+        <li><strong>Qualité & Tests</strong>: Tests UI automatisés, bots de test, Guerkin, Cucumber, Selenium, SpecFlow</li>
+        <li><strong>Bases de données</strong>: SQL, MySQL, SQLite</li>
+        <li><strong>Outils</strong>: Git, Jenkins, Kubernetes, Grafana, Prometheus, Visual Studio Code, JetBrains tools, PowerShell, RHEL 9, Windows 11</li>
+        <li><strong>Gestion & Leadership</strong>: Formation d'équipe, amélioration continue, gestion de projet Agile/Scrum</li>
+    </ul>
+
+    <h2>EXPÉRIENCES PROFESSIONNELLES</h2>
+    
+    <h3>DevOps | Consultant — Eddyfi | Québec (février 2025 - Présent)</h3>
+    <ul>
+        <li>Migration de l'infrastructure Bitbucket vers GitHub Entreprise</li>
+        <li>Effectuer l'analyse et le transfert des repos Git de la compagnie vers GitHub</li>
+        <li>Conception de script GitHub Actions en yaml pour automatiser les processus</li>
+        <li>Reconfiguration de l'infrastructure Jenkins</li>
+        <li>Documentation et formation des nouveaux processus</li>
+    </ul>
+
+    <h3>DevOps | Consultant - Les Jardins du Détour | Stoneham (février 2022 - janvier 2025)</h3>
+    <ul>
+        <li>Mise en place d'une infrastructure pour l'automatisation de la gestion de production</li>
+        <li>Automatisation des systèmes agricoles avec l'approche agriculture 4.0</li>
+    </ul>
+
+    <h3>DevOps | Développement de tests automatisés — Eddyfi | Québec (juin 2018 - février 2022)</h3>
+    <ul>
+        <li>Développement et intégration de pipelines CI/CD pour l'automatisation des tests logiciels</li>
+        <li>Conception et mise en place des tests automatisés pour assurer la qualité des applications .NET</li>
+        <li>Encadrement et formation d'une équipe QA pour améliorer les processus DevOps</li>
+        <li>Participation à l'analyse et à l'optimisation des workflows DevOps</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h3>Autres Expériences en Développement</h3>
+    <ul>
+        <li>INRS (Responsable de l'architecture logicielle, C#/C++, 2017-2018)</li>
+        <li>ICOD (Programmeur-Analyste Java, 2013 - 2015)</li>
+        <li>LaSalle International (Programmeur-Analyste C#/.NET, 2012 - 2013)</li>
+        <li>6i Solution Inc. (Programmeur-Analyste VB.NET, 2011 - 2012)</li>
+        <li>TMS Système (Programmeur-Analyste VB.NET, 2010 - 2011)</li>
+    </ul>
+
+    <h2>FORMATION & CERTIFICATIONS</h2>
+    <ul>
+        <li>AZ-400: Designing and Implementing Microsoft DevOps Solutions (En cours, 2024 - Présent)</li>
+        <li>CompTIA Security+ (En cours, 2025 - Présent)</li>
+        <li>AEC Programmeur-Analyste, Collège MultiHexa, 2010</li>
+        <li>DEP Mécanicien Diesel, CFP Carrefour Formation Mauricie, 2004</li>
+    </ul>
+
+    <h2>LANGUES</h2>
+    <ul>
+        <li>Français (courant)</li>
+        <li>Anglais (professionnel)</li>
+    </ul>
 </body>
 </html>
