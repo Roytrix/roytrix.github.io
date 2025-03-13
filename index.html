@@ -61,88 +61,174 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="assets/css/customs.css">
+    <link rel="stylesheet" href="./assets/css/customs.css">
+    <!-- Add marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <h1>JEAN-MARC HÉBERT</h1>
-    
-    <div class="header-info">
-        <span class="role">DEVOPS | PROGRAMMEUR-ANALYSTE</span>
-        <span class="contact">
-            <a href="mailto:Roytrix@proton.me">Roytrix@proton.me</a> | 
-            581 909-3019 | 
-            Québec, QC | 
-            <a href="https://github.com/Roytrix">github.com/Roytrix</a>
-        </span>
+    <!-- Container for dynamic Markdown content -->
+    <div id="cv-container">
+        <div id="loading">Chargement du CV...</div>
     </div>
 
-    <h2>PROFIL</h2>
-    <p>
-        DevOps passionné, avec plus de 15 ans d'expérience en développement logiciel, automatisation, 
-        intégration et déploiement continu. Spécialisé dans la mise en place d'infrastructures CI/CD optimisées, 
-        l'orchestration de conteneurs et l'amélioration des processus DevOps pour garantir des livraisons fluides et efficaces. 
-        Capable d'allier l'expertise technique, l'esprit analytique et la collaboration pour élever la qualité des produits.
-    </p>
+    <script>
+        // Function to check if file exists with better error handling
+        async function checkFileExists(url) {
+            try {
+                console.log(`Checking if file exists at: ${url}`);
+                const response = await fetch(url, { 
+                    method: 'HEAD',
+                    cache: 'no-cache', // Changed from no-store to no-cache
+                    headers: {
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache'
+                    }
+                });
+                console.log(`Response for ${url}: Status ${response.status} ${response.ok ? '(OK)' : '(Failed)'}`);
+                return response.ok;
+            } catch (error) {
+                console.error(`Error checking ${url}:`, error);
+                return false;
+            }
+        }
 
-    <h2>COMPÉTENCES CLÉS</h2>
-    <ul>
-        <li><strong>DevOps & CI/CD</strong>: Jenkins, GitHub Actions, VMWare, Azure DevOps, Docker, Kubernetes, YAML</li>
-        <li><strong>Cloud & Infrastructure</strong>: Azure, AWS, GitHub Entreprise, Bitbucket, Infrastructure as Code (IaC), Jira</li>
-        <li><strong>Développement & Automatisation</strong>: C#, TypeScript, Rust, Python, Bash, Groovy</li>
-        <li><strong>Qualité & Tests</strong>: Tests UI automatisés, bots de test, Guerkin, Cucumber, Selenium, SpecFlow</li>
-        <li><strong>Bases de données</strong>: SQL, MySQL, SQLite</li>
-        <li><strong>Outils</strong>: Git, Jenkins, Kubernetes, Grafana, Prometheus, Visual Studio Code, JetBrains tools, PowerShell, RHEL 9, Windows 11</li>
-        <li><strong>Gestion & Leadership</strong>: Formation d'équipe, amélioration continue, gestion de projet Agile/Scrum</li>
-    </ul>
+        // Function to fetch and render the Markdown file
+        async function loadCV(retryCount = 0) {
+            const maxRetries = 3;
+            const cvContainer = document.getElementById('cv-container');
+            const primaryPath = './assets/documents/cv.md'; // Added ./ prefix explicitly
+            const fallbackPaths = ['cv.md', './cv.md', './assets/documents/cv.md', 'assets/cv.md', 'documents/cv.md'];
+            
+            try {
+                // Show loading state
+                cvContainer.innerHTML = `<div id="loading">Chargement du CV... ${retryCount > 0 ? `(tentative ${retryCount + 1}/${maxRetries + 1})` : ''}</div>`;
+                console.log(`Starting CV load attempt ${retryCount + 1}`);
+                
+                // Try to find the file
+                let filePath = primaryPath;
+                let fileExists = await checkFileExists(primaryPath);
+                
+                if (!fileExists) {
+                    console.warn(`File not found at primary path: ${primaryPath}, trying alternatives...`);
+                    
+                    // Try alternative paths
+                    for (const path of fallbackPaths) {
+                        if (await checkFileExists(path)) {
+                            filePath = path;
+                            fileExists = true;
+                            console.log(`Found CV at alternative path: ${path}`);
+                            break;
+                        }
+                    }
+                }
+                
+                if (!fileExists) {
+                    throw new Error(`Could not find CV file in any of the expected locations`);
+                }
+                
+                console.log(`Fetching content from: ${filePath}`);
+                const response = await fetch(filePath, {
+                    method: 'GET',
+                    cache: 'no-cache', // Changed from no-store to no-cache
+                    headers: {
+                        'pragma': 'no-cache',
+                        'cache-control': 'no-cache'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const markdown = await response.text();
+                
+                if (!markdown || markdown.trim() === '') {
+                    throw new Error('CV content is empty');
+                }
+                
+                console.log(`Successfully loaded CV content (${markdown.length} characters)`);
+                
+                // Parse Markdown and insert as HTML
+                cvContainer.innerHTML = marked.parse(markdown);
+                
+                // Remove HTML comment tags that might be in the Markdown
+                const commentRegex = /<!--(.*?)-->/gs;
+                cvContainer.innerHTML = cvContainer.innerHTML.replace(commentRegex, '');
+                
+                console.log('CV loaded successfully from: ' + filePath);
+                
+            } catch (error) {
+                console.error('Error loading CV:', error);
+                
+                // Try again if we haven't reached max retries
+                if (retryCount < maxRetries) {
+                    console.log(`Retrying (${retryCount + 1}/${maxRetries}) in 1 second...`);
+                    setTimeout(() => loadCV(retryCount + 1), 1000);
+                    return;
+                }
+                
+                // As a last resort, try to use raw XMLHttpRequest
+                if (retryCount === maxRetries) {
+                    tryXMLHttpRequest();
+                    return;
+                }
+                
+                // If all retries failed, show error message
+                showErrorMessage(error);
+            }
+        }
+        
+        // Try XMLHttpRequest as a fallback
+        function tryXMLHttpRequest() {
+            console.log("Trying XMLHttpRequest as a fallback...");
+            const cvContainer = document.getElementById('cv-container');
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', './assets/documents/cv.md', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const markdown = xhr.responseText;
+                    if (markdown && markdown.trim() !== '') {
+                        cvContainer.innerHTML = marked.parse(markdown);
+                        console.log('CV loaded successfully with XMLHttpRequest');
+                    } else {
+                        showErrorMessage(new Error('CV content is empty (XHR)'));
+                    }
+                } else {
+                    showErrorMessage(new Error(`XMLHttpRequest failed with status ${xhr.status}`));
+                }
+            };
+            xhr.onerror = function() {
+                showErrorMessage(new Error('XMLHttpRequest network error'));
+            };
+            xhr.send();
+        }
+        
+        function showErrorMessage(error) {
+            const cvContainer = document.getElementById('cv-container');
+            let errorMessage = 'Une erreur s\'est produite lors du chargement du CV.';
+            let helpText = 'Vérifiez que le fichier cv.md existe dans le dossier assets/documents/.';
+            
+            if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+                errorMessage = 'Erreur réseau: Impossible de charger le CV. Vérifiez votre connexion internet.';
+                helpText = 'Assurez-vous que le fichier cv.md existe dans un des chemins suivants: assets/documents/, ./ ou assets/';
+            } else if (error.message.includes('404')) {
+                errorMessage = 'Le fichier CV est introuvable.';
+                helpText = 'Vérifiez que le fichier cv.md existe dans le dossier assets/documents/.';
+            }
+            
+            cvContainer.innerHTML = `
+                <div class="error-container">
+                    <h2>Erreur de chargement</h2>
+                    <p>${errorMessage}</p>
+                    <p>${helpText}</p>
+                    <p>Détails techniques: ${error.message}</p>
+                    <button onclick="loadCV()">Réessayer</button>
+                </div>
+            `;
+        }
 
-    <h2>EXPÉRIENCES PROFESSIONNELLES</h2>
-    
-    <h3>DevOps | Consultant — Eddyfi | Québec (février 2025 - Présent)</h3>
-    <ul>
-        <li>Migration de l'infrastructure Bitbucket vers GitHub Entreprise</li>
-        <li>Effectuer l'analyse et le transfert des repos Git de la compagnie vers GitHub</li>
-        <li>Conception de script GitHub Actions en yaml pour automatiser les processus</li>
-        <li>Reconfiguration de l'infrastructure Jenkins</li>
-        <li>Documentation et formation des nouveaux processus</li>
-    </ul>
-
-    <h3>DevOps | Consultant - Les Jardins du Détour | Stoneham (février 2022 - janvier 2025)</h3>
-    <ul>
-        <li>Mise en place d'une infrastructure pour l'automatisation de la gestion de production</li>
-        <li>Automatisation des systèmes agricoles avec l'approche agriculture 4.0</li>
-    </ul>
-
-    <h3>DevOps | Développement de tests automatisés — Eddyfi | Québec (juin 2018 - février 2022)</h3>
-    <ul>
-        <li>Développement et intégration de pipelines CI/CD pour l'automatisation des tests logiciels</li>
-        <li>Conception et mise en place des tests automatisés pour assurer la qualité des applications .NET</li>
-        <li>Encadrement et formation d'une équipe QA pour améliorer les processus DevOps</li>
-        <li>Participation à l'analyse et à l'optimisation des workflows DevOps</li>
-    </ul>
-
-    <div class="page-break"></div>
-
-    <h3>Autres Expériences en Développement</h3>
-    <ul>
-        <li>INRS (Responsable de l'architecture logicielle, C#/C++, 2017-2018)</li>
-        <li>ICOD (Programmeur-Analyste Java, 2013 - 2015)</li>
-        <li>LaSalle International (Programmeur-Analyste C#/.NET, 2012 - 2013)</li>
-        <li>6i Solution Inc. (Programmeur-Analyste VB.NET, 2011 - 2012)</li>
-        <li>TMS Système (Programmeur-Analyste VB.NET, 2010 - 2011)</li>
-    </ul>
-
-    <h2>FORMATION & CERTIFICATIONS</h2>
-    <ul>
-        <li>AZ-400: Designing and Implementing Microsoft DevOps Solutions (En cours, 2024 - Présent)</li>
-        <li>CompTIA Security+ (En cours, 2025 - Présent)</li>
-        <li>AEC Programmeur-Analyste, Collège MultiHexa, 2010</li>
-        <li>DEP Mécanicien Diesel, CFP Carrefour Formation Mauricie, 2004</li>
-    </ul>
-
-    <h2>LANGUES</h2>
-    <ul>
-        <li>Français (courant)</li>
-        <li>Anglais (professionnel)</li>
-    </ul>
+        // Load the CV when the page is ready
+        document.addEventListener('DOMContentLoaded', loadCV);
+    </script>
 </body>
 </html>

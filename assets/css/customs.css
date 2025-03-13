@@ -1,0 +1,34 @@
+/* Custom styles for CV */
+.error-container {
+    border: 1px solid #f44336;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: #ffebee;
+}
+
+.error-container h2 {
+    color: #f44336;
+    margin-top: 0;
+}
+
+.error-container button {
+    background-color: #2E75B5;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.error-container button:hover {
+    background-color: #1d5892;
+}
+
+#loading {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #666;
+}
